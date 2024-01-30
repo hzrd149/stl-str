@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { ndk } from "../services/ndk";
+  import { ndk } from "../../services/ndk";
   import { NDKKind } from "@nostr-dev-kit/ndk";
   import { Spinner } from "flowbite-svelte";
   import { onDestroy } from "svelte";
+  import PartCard from "../../components/PartCard.svelte";
 
   const parts = ndk.storeSubscribe([
     { kinds: [NDKKind.Media], "#m": ["model/stl"] },
@@ -20,6 +21,6 @@
     </div>
   {/if}
   {#each $parts as part}
-    <pre>{JSON.stringify(part.rawEvent())}</pre>
+    <PartCard {part} />
   {/each}
 </main>

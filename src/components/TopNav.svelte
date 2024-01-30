@@ -13,7 +13,6 @@
   import logoSrc from "../assets/untitledui-icons/usb-flash-drive.svg";
   import { ndk } from "../services/ndk";
   import { NDKNip07Signer } from "@nostr-dev-kit/ndk";
-  import { RelayList } from "@nostr-dev-kit/ndk-svelte-components";
 
   let user = ndk.activeUser;
   let profile = ndk.activeUser?.profile ?? null;
@@ -42,11 +41,10 @@
   <NavHamburger />
   <div class="flex items-center gap-2">
     <NavUl>
-      <NavLi href="#/">Home</NavLi>
+      <NavLi href="#/">Things</NavLi>
       <NavLi href="#/parts">Parts</NavLi>
       <NavLi href="#/upload">Upload</NavLi>
     </NavUl>
-    <RelayList {ndk} />
     {#if user}
       <Avatar src={profile?.image} />
     {:else}
