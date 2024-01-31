@@ -26,7 +26,7 @@
 </script>
 
 <Navbar>
-  <NavBrand href="/#">
+  <NavBrand href="#/">
     <img
       src={logoSrc}
       class="me-3 h-6 dark:text-white sm:h-9"
