@@ -4,6 +4,6 @@
   export let user: NDKUser;
 </script>
 
-<a href={`#/user/${user.npub}`} class="truncate font-bold">
+<a href={`#/user/${user.npub}`} class="truncate font-bold" {...$$props}>
   <Name {user} />
 </a>

@@ -14,6 +14,7 @@
   import { Avatar, Name } from "@nostr-dev-kit/ndk-svelte-components";
   import dayjs from "dayjs";
   import UserLink from "../../components/UserLink.svelte";
+  import Timestamp from "../../components/Timestamp.svelte";
 
   export let thing: NDKEvent;
   let files: NDKEvent[] = [];
@@ -43,9 +44,7 @@
     <h1 class="text-lg font-bold">{getThingTitle(thing)}</h1>
     <p class="text-gray-500 dark:text-gray-400">
       <UserLink user={thing.author} />
-      <time datetime={dayjs.unix(created).toISOString()}
-        >{dayjs.unix(created).format("ll")}</time
-      >
+      <Timestamp timestamp={thing.created_at} />
     </p>
   </div>
 </div>

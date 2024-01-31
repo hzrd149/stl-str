@@ -5,6 +5,7 @@ const cacheAdapter = new NDKCacheAdapterDexie({ dbName: "ndk-cache" });
 
 export const ndk = new NDKSvelte({
   explicitRelayUrls: ["wss://nostrue.com"],
+  // explicitRelayUrls: ["ws://localhost:7000"],
   cacheAdapter,
 });
 

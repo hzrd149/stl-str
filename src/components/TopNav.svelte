@@ -13,6 +13,7 @@
   import logoSrc from "../assets/untitledui-icons/usb-flash-drive.svg";
   import { ndk } from "../services/ndk";
   import { NDKNip07Signer } from "@nostr-dev-kit/ndk";
+  import { nip19 } from "nostr-tools";
 
   let user = ndk.activeUser;
   let profile = ndk.activeUser?.profile ?? null;
@@ -43,10 +44,12 @@
     <NavUl>
       <NavLi href="#/">Things</NavLi>
       <NavLi href="#/parts">Parts</NavLi>
-      <NavLi href="#/upload">Upload</NavLi>
+      <NavLi href="#/things/new">Upload</NavLi>
     </NavUl>
     {#if user}
-      <Avatar src={profile?.image} />
+      <a href={`#/user/${user.npub}`}>
+        <Avatar src={profile?.image} />
+      </a>
     {:else}
       <Button on:click={loginWithExt}>Login</Button>
     {/if}

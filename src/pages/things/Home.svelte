@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ndk } from "../../services/ndk";
-  import { Spinner } from "flowbite-svelte";
+  import { Button, Spinner } from "flowbite-svelte";
   import { onDestroy } from "svelte";
   import { THING_KIND } from "../../helpers/thing";
   import ThingCard from "../../components/ThingCard.svelte";
@@ -13,6 +13,10 @@
 </script>
 
 <main>
+  <div class="flex items-center gap-2">
+    <h1 class="text-lg font-bold">Things</h1>
+    <Button href="#/things/new" class="ml-auto">New Thing</Button>
+  </div>
   {#if $things.length === 0}
     <div class="text-center">
       <Spinner />

@@ -9,8 +9,8 @@
     Spinner,
     Textarea,
   } from "flowbite-svelte";
-  import PartFile from "./PartFile.svelte";
-  import MediaPreview from "./MediaPreview.svelte";
+  import PartFile from "../upload/PartFile.svelte";
+  import MediaPreview from "../upload/MediaPreview.svelte";
   import { stl2png } from "../../services/stl-to-png";
   import { readFile } from "../../services/file-reader";
   import { NDKEvent, NDKKind } from "@nostr-dev-kit/ndk";
@@ -20,6 +20,8 @@
   import { THING_KIND } from "../../helpers/thing";
   import { push } from "svelte-spa-router";
   import { getThingNaddr } from "../../helpers/thing";
+  import LoadingOverlay from "../../components/LoadingOverlay.svelte";
+  import { buildPartEventFromUpload } from "../../helpers/part";
 
   let mediaInput: HTMLInputElement;
   let thumbnailInput: HTMLInputElement;
@@ -90,20 +92,8 @@
     let partEvents: NDKEvent[] = [];
     for (const part of parts) {
       const res = await uploadFile(part);
-      const event = new NDKEvent(ndk);
-      event.kind = NDKKind.Media;
-      event.content = "";
-      event.created_at = dayjs().unix();
-      event.tags.push(["name", res.name]);
-      event.tags.push(["url", res.url]);
-      event.tags.push(["m", res.type]);
-      event.tags.push(["x", res.sha256]);
-      event.tags.push(["size", String(res.size)]);
-      event.tags.push(["magnet", res.magnet]);
-      event.tags.push(["i", res.infohash]);
       const thumb = partThumbnailURLs.get(part);
-      if (thumb) event.tags.push(["thumb", thumb]);
-      event.tags.push(["alt", "3D Printing model"]);
+      const event = buildPartEventFromUpload(res, thumb);
       await event.sign();
       partEvents.push(event);
     }
@@ -231,11 +221,4 @@
   </div>
 </form>
 
-{#if loading}
-  <div
-    class="bg-dark fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center gap-2 bg-black/50"
-  >
-    <Spinner />
-    <div class="text-lg text-white">{loading}</div>
-  </div>
-{/if}
+<LoadingOverlay message={loading} />

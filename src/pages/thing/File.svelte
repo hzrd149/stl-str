@@ -1,23 +1,23 @@
 <script lang="ts">
   import dayjs from "dayjs";
-  import { Button } from "flowbite-svelte";
   import type { NDKEvent } from "@nostr-dev-kit/ndk";
-  import magnetSrc from "../../assets/untitledui-icons/magnet.svg";
   import { getTagValue } from "../../helpers/event";
   import { formatBytes } from "../../helpers/number";
-  import Magnet from "../../components/icons/magnet.svelte";
-  import Download from "../../components/icons/download.svelte";
+  import FileDownloadButton from "../../components/FileDownloadButton.svelte";
+  import FileMagnetButton from "../../components/FileMagnetButton.svelte";
 
   export let file: NDKEvent;
   let thumbnail: string | undefined = "";
+  let link: string | undefined = undefined;
   $: type = getTagValue(file, "m") ?? "unknown";
   $: size = getTagValue(file, "size");
   $: magnet = getTagValue(file, "magnet");
 
   $: {
-    if (type === "model/stl")
+    if (type === "model/stl") {
       thumbnail = getTagValue(file, "thumb") || getTagValue(file, "image");
-    else if (type.startsWith("image/")) thumbnail = getTagValue(file, "url");
+      link = `#/part/${file.encode()}`;
+    } else if (type.startsWith("image/")) thumbnail = getTagValue(file, "url");
     else thumbnail = undefined;
   }
 </script>
@@ -32,23 +32,17 @@
   />
   <div class="flex w-full flex-col gap-2">
     <div class="flex items-center gap-2">
-      <p class="font-bold text-gray-900 dark:text-white">
-        {getTagValue(file, "name")}
-      </p>
-      <Button
-        class="ml-auto !p-2"
-        size="xs"
-        href={getTagValue(file, "url")}
-        target="_blank"
-        outline
-        download={getTagValue(file, "name")}
-        ><Download class="mr-1 h-4 w-4" />Download</Button
-      >
-      {#if magnet}
-        <Button href={magnet} target="_blank" size="xs" class="!p-2">
-          <Magnet class="h-4 w-4" /></Button
-        >
+      {#if link}
+        <a class="font-bold text-gray-900 dark:text-white" href={link}>
+          {getTagValue(file, "name")}
+        </a>
+      {:else}
+        <p class="font-bold text-gray-900 dark:text-white">
+          {getTagValue(file, "name")}
+        </p>
       {/if}
+      <FileDownloadButton {file} />
+      <FileMagnetButton {file} />
     </div>
     <div>
       <p>Size: {size ? formatBytes(parseInt(size)) : "unknown"}</p>
