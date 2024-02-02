@@ -30,6 +30,6 @@
 </script>
 
 <TopNav />
-<div class="mx-auto flex w-full flex-col gap-2 px-2 pb-10 md:max-w-screen-md">
+<div class="mx-auto flex w-full flex-col gap-2 px-2 pb-10 md:max-w-screen-lg">
   <Router {routes} />
 </div>
